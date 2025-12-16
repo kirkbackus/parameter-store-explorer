@@ -1,0 +1,75 @@
+{
+  "name": "parameter-store-explorer",
+  "version": "1.0.0",
+  "description": "A desktop application for exploring and managing AWS Parameter Store",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "npx concurrently \"next dev renderer -p 3000\" \"npx tsc -p tsconfig.main.json -w\" \"npx wait-on http://localhost:3000 dist/main/index.js && electron .\"",
+    "build": "npx tsc -p tsconfig.main.json && next build renderer && electron-builder",
+    "start": "electron ."
+  },
+  "keywords": [
+    "aws",
+    "ssm",
+    "parameter-store",
+    "electron",
+    "desktop"
+  ],
+  "author": "Kirk Backus",
+  "license": "MIT",
+  "build": {
+    "appId": "com.kirkbackus.parameter-store-explorer",
+    "productName": "Parameter Store Explorer",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "renderer/out/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "resources/icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "resources/icon.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "resources/icon.png"
+    }
+  },
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.943.0",
+    "@aws-sdk/credential-providers": "^3.943.0",
+    "@aws-sdk/shared-ini-file-loader": "^3.374.0",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-slot": "^1.2.4",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.25",
+    "lucide-react": "^0.555.0",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tailwind-merge": "^3.4.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.22",
+    "concurrently": "^9.2.1",
+    "electron": "^39.2.5",
+    "electron-builder": "^26.0.12",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "wait-on": "^9.0.3"
+  }
+}

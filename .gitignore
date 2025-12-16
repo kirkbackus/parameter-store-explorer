@@ -1,0 +1,17 @@
+node_modules
+dist
+.next
+out
+renderer/.next
+renderer/out
+renderer/dist
+.DS_Store
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea
+.vscode
+*.log
+release/
