@@ -62,12 +62,40 @@ export default function Home() {
         setLoading(true);
         setError(null);
         try {
-            const searchPath = search.trim()
-                ? (search.startsWith('/') ? search : `/${search}`)
-                : '/';
+            let apiPath = '/';
+            let filterQuery = '';
 
-            const params = await window.electron.listParameters(selectedProfile, searchPath, true);
-            setParameters(params);
+            const trimmedSearch = search.trim();
+            if (trimmedSearch) {
+                // Ensure starts with /
+                const normalizedSearch = trimmedSearch.startsWith('/') ? trimmedSearch : `/${trimmedSearch}`;
+
+                // If ends with /, treat as pure path
+                if (normalizedSearch.endsWith('/')) {
+                    apiPath = normalizedSearch;
+                } else {
+                    // Split at last slash
+                    const lastSlashIndex = normalizedSearch.lastIndexOf('/');
+                    // Path includes the slash for the API
+                    apiPath = normalizedSearch.substring(0, lastSlashIndex + 1);
+                    // Filter is the rest
+                    filterQuery = normalizedSearch.substring(lastSlashIndex + 1);
+                }
+            }
+
+            // Ensure path is at least '/'
+            if (!apiPath) apiPath = '/';
+
+            const params = await window.electron.listParameters(selectedProfile, apiPath, true);
+
+            // Client-side filter
+            if (filterQuery) {
+                const lowerFilter = filterQuery.toLowerCase();
+                const filtered = params.filter(p => p.Name.toLowerCase().includes(lowerFilter));
+                setParameters(filtered);
+            } else {
+                setParameters(params);
+            }
         } catch (err: any) {
             console.error(err);
             setParameters([]);
